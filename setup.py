@@ -1,6 +1,6 @@
 from setuptools import setup
 
-setup(name='trading_environment',
+setup(name='trading_bot',
       version='0.1.0',
       install_requires=[
             'pandas',
