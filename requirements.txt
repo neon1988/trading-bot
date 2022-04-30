@@ -1,0 +1,10 @@
+django>=4.0.0
+django-environ>=0.8.0
+gate-api>=4.21.0
+pandas>=1.4.0
+numpy>=1.22.0
+psycopg2-binary>=2.9.0
+factory-boy>=3.2.0
+tqdm==4.54.1
+pyhumps==3.5.3
+pandas-ta==0.3.14b
