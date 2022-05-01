@@ -78,3 +78,12 @@ class Strategy:
 
     def get_start_balance(self) -> float:
         return self.start_balance
+
+    def get_balance(self) -> float:
+        currency1, currency2 = self.currency_pair.upper().split("_")
+        last_price = self.df.iloc[-1]['close']
+
+        currency1_balance = self.exchange.get_currency_available_balance(currency1)
+        currency2_balance = self.exchange.get_currency_available_balance(currency2)
+
+        return currency1_balance * last_price + currency2_balance

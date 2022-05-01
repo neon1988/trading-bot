@@ -8,10 +8,21 @@ import datetime
 
 class RsiBuyHoldStrategy(Strategy):
     fee = 0.2
-    rsi = 6
-    rsi_buy_limit = 42
-    take_profit_percentage = 7
+    rsi = 21
+    rsi_buy_limit = 30
+    take_profit_percentage = 13
     max_simultaneous_open_trades_limit = 20
+    min_quantity = 1.1
+
+    def load_dataframe(self, *args, **kwargs):
+        super(RsiBuyHoldStrategy, self).load_dataframe(*args, **kwargs)
+
+        if self.currency_pair.upper() == 'ATOM_USDT':
+            self.rsi = 20
+            self.rsi_buy_limit = 40
+            self.take_profit_percentage = 13
+
+        #print(f'rsi {self.rsi} rsi_buy_limit {self.rsi_buy_limit} take_profit_percentage {self.take_profit_percentage}')
 
     def append_indicators(self):
         df = self.df
@@ -51,6 +62,9 @@ class RsiBuyHoldStrategy(Strategy):
 
             amount = quantity / candlestick['close']
 
+            if quantity < self.min_quantity:
+                return False
+
             id = self.exchange.create_trade(
                 self.currency_pair,
                 price=candlestick['close'], amount=amount, side='buy',
@@ -60,6 +74,8 @@ class RsiBuyHoldStrategy(Strategy):
 
             if trade.is_closed():
                 amount = trade.amount - trade.fee - 0.01
+
+                amount = amount - amount / 1000 # minus 0.1 percent
 
                 price = (100 + self.take_profit_percentage) * candlestick['close'] / 100
 
