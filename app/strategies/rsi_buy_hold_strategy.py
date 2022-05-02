@@ -65,10 +65,12 @@ class RsiBuyHoldStrategy(Strategy):
             if quantity < self.min_quantity:
                 return False
 
+            text = self.get_trade_group_id()
+
             id = self.exchange.create_trade(
                 self.currency_pair,
                 price=candlestick['close'], amount=amount, side='buy',
-                time=candlestick['datetime'], status="closed")
+                time=candlestick['datetime'], status="closed", text=text)
 
             trade = self.exchange.get_trade(id, self.currency_pair)
 
@@ -82,8 +84,11 @@ class RsiBuyHoldStrategy(Strategy):
                 self.exchange.create_trade(
                     self.currency_pair,
                     price=price, amount=amount, side='sell',
-                    time=candlestick['datetime'], status="open")
+                    time=candlestick['datetime'], status="open", text=text)
             else:
                 raise Exception('Trade is still open')
 
         return True
+
+    def get_trade_group_id(self) -> int:
+        return int(datetime.datetime.now().timestamp() * 1000000)

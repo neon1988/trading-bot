@@ -19,11 +19,10 @@ class BacktestExchange(Exchange):
         self.trades = pd.DataFrame(None,
                                    columns=['currency_pair', 'price', 'amount', 'side', 'fee', 'fee_currency',
                                             'create_time', 'update_time', 'fill_price', 'status',
-                                            'id']).astype({
+                                            'id', 'text']).astype({
             'currency_pair': str, 'price': np.float32, 'amount': np.float32, 'side': str, 'fee': np.float32,
             'fee_currency': str, 'create_time': 'datetime64[ns]', 'update_time': 'datetime64[ns]', 'fill_price': np.float32,
-            'id': np.int32,
-            'status': str
+            'id': np.int32, 'status': str, 'text': str
         })
 
         self.start_balance = start_balance
@@ -74,7 +73,7 @@ class BacktestExchange(Exchange):
         return True
 
     def create_trade(self, currency_pair: str, price: float, amount: float, side: str,
-                     time: datetime = None, status: str = 'open') -> int:
+                     time: datetime = None, status: str = 'open', text: str = '') -> int:
 
         currency_pair = currency_pair.upper()
 
@@ -124,7 +123,8 @@ class BacktestExchange(Exchange):
             'create_time': time,
             'update_time': time,
             'fill_price': fill_price,
-            'status': status
+            'status': status,
+            'text': text
         }
 
         self.trades.loc[self.trades.shape[0]] = row

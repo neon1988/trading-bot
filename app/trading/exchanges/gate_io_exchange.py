@@ -14,7 +14,7 @@ class GateIoExchange(Exchange):
     min_create_trade_sum = 1
 
     def create_trade(self, currency_pair: str, price: float, amount: float, side: str,
-                     time: int = None, status: str = 'open') -> int:
+                     time: int = None, status: str = 'open', text: str = '') -> int:
         price = price + (
                 price * self.fee / 100)  # append small percentage so that the transaction is executed instantly
 
@@ -24,7 +24,7 @@ class GateIoExchange(Exchange):
         spot_api = SpotApi(api_client)
 
         order = gate_api.Order(account="spot", currency_pair=currency_pair, price=price, amount=amount, side=side,
-                               status=status)
+                               status=status, text=f't-{text}')
 
         api_response = spot_api.create_order(order)
 
@@ -43,6 +43,7 @@ class GateIoExchange(Exchange):
     def get_trade(self, id: int, currency_pair: str) -> Trade:
         spot_api = SpotApi(api_client)
         api_response = self.try_timeout(lambda: spot_api.get_order(id, currency_pair), 3, 60, GateApiException)
+        api_response.text = api_response.text[2:]
         return Trade().from_dict(api_response.to_dict())
 
     def cancel_trade(self, id: int) -> bool:

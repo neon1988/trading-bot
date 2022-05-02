@@ -12,7 +12,7 @@ class BacktestExchangeCreateSpotOrderTest(unittest.TestCase):
 
         time = datetime.datetime.now()
 
-        id = exchange.create_trade('OGN_USDT', 0.68, 51.07, 'buy', time, status='closed')
+        id = exchange.create_trade('OGN_USDT', 0.68, 51.07, 'buy', time, status='closed', text="123678164")
 
         trade = exchange.get_trade(id, 'OGN_USDT')
 
@@ -23,6 +23,7 @@ class BacktestExchangeCreateSpotOrderTest(unittest.TestCase):
         self.assertEquals('OGN', trade.fee_currency)
         self.assertEquals(34.7276, trade.fill_price)
         self.assertEquals(time, trade.create_time)
+        self.assertEquals('123678164', trade.text)
 
     def test_create_sell_order(self):
         exchange = BacktestExchange()

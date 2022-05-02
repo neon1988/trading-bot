@@ -15,6 +15,7 @@ class Trade:
         self.price = None
         self.amount = None
         self.id = None
+        self.text = None
 
     def from_dict(self, item: dict):
 
@@ -29,6 +30,7 @@ class Trade:
         self.fill_price = float(item['fill_price'])
         self.create_time = item['create_time']
         self.update_time = item['update_time']
+        self.text = item['text']
 
         return self
 
