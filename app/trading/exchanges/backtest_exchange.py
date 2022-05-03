@@ -273,10 +273,13 @@ class BacktestExchange(Exchange):
         for i in trade_groups.__iter__():
             df = i[1]
 
-            buy_price = float(df[df['side'] == 'buy']['fill_price'])
+            if len(df[df['side'] == 'buy']) > 0:
+                buy_price = float(df[df['side'] == 'buy']['fill_price'].iloc[:1])
+            else:
+                buy_price = None
 
             if len(df[df['side'] == 'sell']) > 0:
-                sell_price = float(df[df['side'] == 'sell']['fill_price'])
+                sell_price = float(df[df['side'] == 'sell']['fill_price'].iloc[:1])
             else:
                 sell_price = None
 
