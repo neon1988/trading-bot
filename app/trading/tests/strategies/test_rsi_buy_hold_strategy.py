@@ -53,7 +53,7 @@ class RSIBuyHoldStrategyTest(unittest.TestCase):
         trade2 = next(iter(open_trades))
 
         self.assertFalse(trade2.is_closed())
-        self.assertAlmostEquals(1.55781, trade2.amount, 4)
+        self.assertAlmostEquals(1.55932, trade2.amount, 4)
         self.assertEquals(34.24, trade2.price)
         self.assertEquals('open', trade2.status)
         self.assertEquals('sell', trade2.side)
