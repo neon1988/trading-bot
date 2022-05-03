@@ -22,6 +22,11 @@ class RsiBuyHoldStrategy(Strategy):
             self.rsi_buy_limit = 40
             self.take_profit_percentage = 13
 
+        if self.currency_pair.upper() == 'AVAX_USDT':
+            self.rsi = 20
+            self.rsi_buy_limit = 40
+            self.take_profit_percentage = 50
+
         #print(f'rsi {self.rsi} rsi_buy_limit {self.rsi_buy_limit} take_profit_percentage {self.take_profit_percentage}')
 
     def append_indicators(self):
@@ -86,7 +91,9 @@ class RsiBuyHoldStrategy(Strategy):
                     price=price, amount=amount, side='sell',
                     time=candlestick['datetime'], status="open", text=text)
             else:
-                raise Exception('Trade is still open')
+                print('Trade is still open')
+
+                self.exchange.cancel_trade(id, self.currency_pair)
 
         return True
 

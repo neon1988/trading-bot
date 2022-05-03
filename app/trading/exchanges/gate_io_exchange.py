@@ -46,9 +46,9 @@ class GateIoExchange(Exchange):
         api_response.text = api_response.text[2:]
         return Trade().from_dict(api_response.to_dict())
 
-    def cancel_trade(self, id: int) -> bool:
+    def cancel_trade(self, id: int, currency_pair: str) -> bool:
         spot_api = SpotApi(api_client)
-        api_response = spot_api.cancel_order(id)
+        api_response = spot_api.cancel_order(id, currency_pair)
         return True
 
     def close_trade(self, id: int, time: int = None) -> bool:
