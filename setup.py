@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='trading_bot',
-      version='0.3.0',
+      version='0.3.1',
       install_requires=[
             'pandas',
             'numpy',

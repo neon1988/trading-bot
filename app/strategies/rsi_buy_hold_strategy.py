@@ -80,9 +80,9 @@ class RsiBuyHoldStrategy(Strategy):
             trade = self.exchange.get_trade(id, self.currency_pair)
 
             if trade.is_closed():
-                amount = trade.amount - trade.fee - 0.01
+                amount = trade.amount - trade.fee
 
-                amount = amount - amount / 1000 # minus 0.1 percent
+                amount = amount - amount * 0.1 / 100   # minus 0.1 percent
 
                 price = (100 + self.take_profit_percentage) * candlestick['close'] / 100
 
