@@ -265,4 +265,24 @@ class BacktestExchange(Exchange):
 
         return list(map(lambda x: Trade().from_dict(x), df.to_dict('records')))
 
+    def get_profit_from_closed_trades(self) -> float:
+        trade_groups = self.get_closed_trades().groupby('text')
+
+        profit = 0
+
+        for i in trade_groups.__iter__():
+            df = i[1]
+
+            buy_price = float(df[df['side'] == 'buy']['fill_price'])
+
+            if len(df[df['side'] == 'sell']) > 0:
+                sell_price = float(df[df['side'] == 'sell']['fill_price'])
+            else:
+                sell_price = None
+
+            if (buy_price is not None) & (sell_price is not None):
+                profit += sell_price - buy_price
+
+        return profit
+
 
