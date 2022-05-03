@@ -7,23 +7,23 @@ import datetime
 class RSIBuyHoldStrategyTest(unittest.TestCase):
 
     def test_disable_to_open_double_trade(self):
-
         strategy = RsiBuyHoldStrategy(exchange=BacktestExchange(start_balance=1000))
         strategy.interval = 3600
         strategy.currency_pair = 'ATOM_USDT'
 
-        tick = strategy.tick({'buy': 1, 'close': 32, 'datetime': datetime.datetime.fromisoformat('2021-04-26 15:30:00')})
+        tick = strategy.tick(
+            {'buy': 1, 'close': 32, 'datetime': datetime.datetime.fromisoformat('2021-04-26 15:30:00')})
 
         self.assertTrue(tick)
         self.assertEquals(1, strategy.exchange.get_closed_trades_count())
 
-        tick = strategy.tick({'buy': 1, 'close': 32, 'datetime': datetime.datetime.fromisoformat('2021-04-26 15:31:00')})
+        tick = strategy.tick(
+            {'buy': 1, 'close': 32, 'datetime': datetime.datetime.fromisoformat('2021-04-26 15:31:00')})
 
         self.assertEquals(1, strategy.exchange.get_closed_trades_count())
         self.assertFalse(tick)
 
     def test_buy_trade_and_sell_open_trade(self):
-
         strategy = RsiBuyHoldStrategy(exchange=BacktestExchange(start_balance=1000))
         strategy.interval = 3600
         strategy.currency_pair = 'ATOM_USDT'
@@ -59,7 +59,4 @@ class RSIBuyHoldStrategyTest(unittest.TestCase):
         self.assertEquals('sell', trade2.side)
 
         self.assertEquals(trade.text, trade2.text)
-
-
-
 

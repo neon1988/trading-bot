@@ -84,6 +84,9 @@ class RsiBuyHoldStrategy(Strategy):
                 amount = trade.amount - trade.amount * trade.fee / 100 # minus trading fee
                 amount = amount - amount * 0.2 / 100   # minus 0.2 percent
 
+                if amount < 0:
+                    raise Exception('Amount is below zero')
+
                 price = (100 + self.take_profit_percentage) * candlestick['close'] / 100
 
                 self.exchange.create_trade(
