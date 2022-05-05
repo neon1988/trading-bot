@@ -8,9 +8,9 @@ import datetime
 
 class RsiBuyHoldStrategy(Strategy):
     fee = 0.2
-    rsi = 21
-    rsi_buy_limit = 30
-    take_profit_percentage = 13
+    rsi = 20
+    rsi_buy_limit = 40
+    take_profit_percentage = 40
     max_simultaneous_open_trades_limit = 20
     min_quantity = 1.1
 
@@ -18,13 +18,13 @@ class RsiBuyHoldStrategy(Strategy):
         super(RsiBuyHoldStrategy, self).load_dataframe(*args, **kwargs)
 
         if self.currency_pair.upper() == 'ATOM_USDT':
-            self.rsi = 20
+            self.rsi = 10
             self.rsi_buy_limit = 40
             self.take_profit_percentage = 13
 
         if self.currency_pair.upper() == 'AVAX_USDT':
-            self.rsi = 20
-            self.rsi_buy_limit = 40
+            self.rsi = 6
+            self.rsi_buy_limit = 36
             self.take_profit_percentage = 50
 
         #print(f'rsi {self.rsi} rsi_buy_limit {self.rsi_buy_limit} take_profit_percentage {self.take_profit_percentage}')
