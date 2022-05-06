@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        print(f'Interval in seconds {self.get_interval_in_seconds(options)}')
+        self.stdout.write(f'Interval in seconds {self.get_interval_in_seconds(options)}')
 
         while True:
 
@@ -47,9 +47,11 @@ class Command(BaseCommand):
 
         strategy.tick(latest_candle)
 
+        self.stdout.write(f"Tick done")
+
     def update_candlesticks(self, options):
         call_command('download_data', options['pair'], 1, options['interval'])
-        self.stdout.write(f"Data for the day has been updated")
+        self.stdout.write(f'Data for the day has been updated')
 
     def get_candlesticks(self, options):
         query = Candlestick.objects \

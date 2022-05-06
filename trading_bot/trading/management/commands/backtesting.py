@@ -49,8 +49,8 @@ class Command(BaseCommand):
 
         currency1, currency2 = currency_pair.upper().split("_")
 
-        print(f'{currency1} balance: {round(self.strategy.exchange.get_balance(currency1), 3)}')
-        print(f'{currency2} balance: {round(self.strategy.exchange.get_balance(currency2), 3)}')
+        self.stdout.write(f'{currency1} balance: {round(self.strategy.exchange.get_balance(currency1), 3)}')
+        self.stdout.write(f'{currency2} balance: {round(self.strategy.exchange.get_balance(currency2), 3)}')
 
     def load_class(self, path: str, name: str):
         module = importlib.import_module(f"{path}.{name}")
