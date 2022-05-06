@@ -47,8 +47,8 @@ class Command(BaseCommand):
 
         strategy.tick(latest_candle)
 
-        self.stdout.write(f"Tick done")
-        print("\n")
+        self.stdout.write(f'Tick done')
+        self.stdout.flush()
 
     def update_candlesticks(self, options):
         call_command('download_data', options['pair'], 1, options['interval'])
