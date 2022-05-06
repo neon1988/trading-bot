@@ -1,7 +1,7 @@
 from trading_bot.strategies.strategy import Strategy
 import numpy as np
 import datetime
-
+import pandas_ta as ta
 
 class RsiBuyHoldStrategy(Strategy):
     fee = 0.2
@@ -17,12 +17,12 @@ class RsiBuyHoldStrategy(Strategy):
         if self.currency_pair.upper() == 'ATOM_USDT':
             self.rsi = 10
             self.rsi_buy_limit = 40
-            self.take_profit_percentage = 13
+            self.take_profit_percentage = 15
 
         if self.currency_pair.upper() == 'AVAX_USDT':
             self.rsi = 6
             self.rsi_buy_limit = 36
-            self.take_profit_percentage = 50
+            self.take_profit_percentage = 45
 
         #print(f'rsi {self.rsi} rsi_buy_limit {self.rsi_buy_limit} take_profit_percentage {self.take_profit_percentage}')
 
