@@ -1,7 +1,11 @@
 Trading bot
 =========================
 
-# Create db
+### Install requirements
+
+``pip install -r requirements.txt``
+
+### Create db
 
 ```shell
 sudo -u postgres psql
