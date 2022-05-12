@@ -12,8 +12,23 @@ sudo -u postgres psql
 create database trading_bot;
 create user trading_bot_user with encrypted password 'password';
 grant all privileges on database trading_bot to trading_bot_user;
+alter user trading_bot_user createdb;
 exit
 sudo -u postgres psql -d trading_bot -c "CREATE EXTENSION pg_trgm;"
+```
+
+### Install Ta-lib
+
+```
+sudo apt install build-essential wget -y
+cd /tmp
+wget https://artiya4u.keybase.pub/TA-lib/ta-lib-0.4.0-src.tar.gz
+tar -xvf ta-lib-0.4.0-src.tar.gz
+cd ta-lib/
+./configure --prefix=/usr
+make
+sudo make install
+pip install TA-Lib
 ```
 
 ### Run migration
