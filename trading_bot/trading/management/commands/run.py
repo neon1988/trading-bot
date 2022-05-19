@@ -2,8 +2,9 @@ import time
 from datetime import datetime, timezone
 
 from django.core.management.base import BaseCommand
-from gate_api import ApiClient, SpotApi, Configuration
+from gate_api import ApiClient, SpotApi, Configuration, DeliveryApi, FuturesApi, MarginApi, OptionsApi
 
+from trading_bot.service.binance_api import client
 from trading_bot.trading.enums.intervals import Intervals
 from trading_bot.trading.exchanges.gate_io_exchange import GateIoExchange
 from trading_bot.trading.models import Candlestick
@@ -12,6 +13,7 @@ from typing import List
 import time
 from enum import Enum
 from datetime import datetime
+from gate_api.exceptions import ApiException, GateApiException
 
 
 class Command(BaseCommand):
@@ -19,14 +21,21 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        text = int(datetime.now().timestamp() * 1000000)
+        result = client.get_order_book(symbol='BTCUSDT', limit=1000)
 
+        bids = 0
+        asks = 0
 
+        for i in result['bids']:
+            bids += float(i[1])
 
-        string = "t-freeCodeCamp"
-        print(string[2:])
+        for i in result['asks']:
+            asks += float(i[1])
 
-        #print(exchange.create_trade('AVAX_USDT', 10, 0.1, 'buy', text=text))
+        print(bids)
+        print(asks)
 
-        print(exchange.get_trade(150427353834, 'AVAX_USDT').text)
+        print(bids / asks)
+
+        #print(result['asks'])
 

@@ -29,3 +29,13 @@ class Candlestick(models.Model):
 
     class Meta:
         unique_together = ['pair', 'interval', 'datetime']
+
+class OrderBook(models.Model):
+    pair = models.CharField(max_length=20)
+    exchange = models.CharField(max_length=10, default='gate_io')
+    datetime = models.DateTimeField('datetime')
+    asks = models.FloatField()
+    bids = models.FloatField()
+
+    class Meta:
+        unique_together = ['pair', 'datetime']

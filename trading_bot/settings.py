@@ -130,5 +130,9 @@ EXCHANGES = {
         'host': env('GATE_IO_HOST'),
         'secret': env('GATE_IO_SECRET'),
         'key': env('GATE_IO_KEY')
+    },
+    'binance': {
+        'key': env('BINANCE_KEY'),
+        'secret': env('BINANCE_SECRET'),
     }
 }
