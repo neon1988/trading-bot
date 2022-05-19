@@ -94,3 +94,10 @@ sudo supervisorctl stop trading-bot-atom-usdt
 sudo supervisorctl restart trading-bot-avax-usdt
 sudo supervisorctl restart trading-bot-atom-usdt
 ```
+
+###Create a cron task to get the order book
+```
+crontab -e
+* * * * * cd ~/trading-bot && python3 manage.py parse_order_book BTC_USDT binance >> /dev/null 2>&1
+* * * * * cd ~/trading-bot && python3 manage.py parse_order_book BTC_USDT gate_io >> /dev/null 2>&1
+```
