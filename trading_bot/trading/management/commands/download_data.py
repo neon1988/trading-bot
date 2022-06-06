@@ -9,6 +9,10 @@ from trading_bot.trading.models import Candlestick
 from trading_bot.service.gate_io_api import api_client
 from typing import List
 import math
+import requests
+import pandas as pd
+import io
+from pandas import DataFrame
 
 class Command(BaseCommand):
     help = 'Downloading cryptocurrency exchange rate'
@@ -36,18 +40,18 @@ class Command(BaseCommand):
 
         for batch in self.batch_time(_from, to, batch_seconds):
 
-            candlesticks = spot_api.list_candlesticks(
+            candlesticks = self.gate_io_request_candlesticks(
                 currency_pair=options['pair'],
-                interval=options['interval'],
+                interval=Intervals.dict[options['interval']],
                 _from=batch[0],
                 to=batch[1]
             )
 
             items = []
 
-            for candlestick in candlesticks:
+            for index, candlestick in candlesticks.iterrows():
 
-                dt = datetime.fromtimestamp(int(candlestick[0]), tz=timezone.utc)
+                dt = datetime.fromtimestamp(int(candlestick['date']), tz=timezone.utc)
 
                 try:
                     obj = Candlestick.objects.get(
@@ -57,11 +61,11 @@ class Command(BaseCommand):
                     )
                 except Candlestick.DoesNotExist:
                     items.append(Candlestick(
-                        open=candlestick[5],
-                        close=candlestick[2],
-                        high=candlestick[3],
-                        low=candlestick[4],
-                        volume=candlestick[1],
+                        open=candlestick['open'],
+                        close=candlestick['close'],
+                        high=candlestick['high'],
+                        low=candlestick['low'],
+                        volume=candlestick['volume'],
                         pair=options['pair'],
                         interval=options['interval'],
                         datetime=dt
@@ -87,3 +91,27 @@ class Command(BaseCommand):
             array.append([begin, end])
 
         return array
+
+    def gate_io_request_candlesticks(self, currency_pair, interval, _from, to) -> DataFrame:
+
+        params = dict(
+            type='tvkline',
+            symbol=currency_pair.lower(),
+            to = to,
+            interval = interval
+        )
+
+        params['from'] = _from
+
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
+
+        response = requests.get('https://www.gate.io/json_svr/query/', params, timeout=10, headers=headers)
+
+        response.raise_for_status()
+
+        df = pd.read_csv(io.StringIO(response.text))
+
+        df['date'] = df['date'] / 1000
+
+        return df
