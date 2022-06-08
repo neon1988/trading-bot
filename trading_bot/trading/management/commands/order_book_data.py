@@ -6,7 +6,7 @@ from trading_bot.trading.models import Candlestick, OrderBook
 import pandas as pd
 import os
 
-# python3 manage.py order_book_data order_book_BTC_USDT_60 BTC_USDT 100 gate_io 60
+# python3 manage.py order_book_data order_book_binance_BTC_USDT_60 BTC_USDT 100 binance 60
 
 class Command(BaseCommand):
     help = 'Create an order book data file'
