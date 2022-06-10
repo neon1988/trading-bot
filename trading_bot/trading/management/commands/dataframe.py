@@ -5,6 +5,7 @@ from django.core.management.base import BaseCommand
 from trading_bot.trading.models import Candlestick
 import pandas as pd
 
+# python3 manage.py dataframe btc_usdt_60 BTC_USDT 21 1m
 
 class Command(BaseCommand):
     help = 'Backtest strategy on historical data'

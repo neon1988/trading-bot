@@ -14,6 +14,8 @@ import pandas as pd
 import io
 from pandas import DataFrame
 
+# python3 manage.py download_data BTC_USDT 31 60
+
 class Command(BaseCommand):
     help = 'Downloading cryptocurrency exchange rate'
 

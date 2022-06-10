@@ -52,7 +52,8 @@ class Command(BaseCommand):
 
         dataframe = dataframe[['datetime', 'asks', 'bids']]
 
-        os.mkdir('csv/order_book')
+        if not os.path.exists('csv/order_book'):
+            os.mkdir('csv/order_book')
 
         dataframe.to_csv(
             path_or_buf=f'csv/order_book/{options["name"]}.csv.zip',
