@@ -15,6 +15,8 @@ from gate_api.exceptions import ApiException, GateApiException
 from datetime import datetime, timezone
 from trading_bot.service.binance_api import client
 
+# python3 manage.py parse_order_book BTC_USDT binance
+
 class Command(BaseCommand):
     help = 'Parse order book'
 
@@ -47,7 +49,7 @@ class Command(BaseCommand):
             bids = round(bids, 6)
             asks = round(asks, 6)
 
-            order = OrderBook(pair=currency_pair, datetime=dt, asks=asks, bids=bids, exchange=exchange)
+            order = OrderBook(pair=currency_pair, datetime=dt, asks=asks, bids=bids, exchange=exchange, interval=60)
             order.save()
 
             if daemon:

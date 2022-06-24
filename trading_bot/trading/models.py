@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 TIMEFRAMES = [
     (0, '1m'),
@@ -11,6 +12,9 @@ TIMEFRAMES = [
     (7, '1w')
 ]
 
+class Exchanges(models.TextChoices):
+    GATE_IO = 0, _('gate_io')
+    BINANCE = 1, _('binance')
 
 class Candlestick(models.Model):
     pair = models.CharField(
@@ -26,9 +30,13 @@ class Candlestick(models.Model):
     low = models.FloatField()
     datetime = models.DateTimeField('datetime')
     volume = models.FloatField()
+    exchange = models.CharField(
+        max_length=1,
+        choices=Exchanges.choices
+    )
 
     class Meta:
-        unique_together = ['pair', 'interval', 'datetime']
+        unique_together = ['pair', 'interval', 'datetime', 'exchange']
 
 class OrderBook(models.Model):
     pair = models.CharField(max_length=20)

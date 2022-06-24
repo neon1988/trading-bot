@@ -2,7 +2,7 @@ from datetime import datetime
 
 from django.core.management.base import BaseCommand
 
-from trading_bot.trading.models import Candlestick
+from trading_bot.trading.models import Candlestick, Exchanges
 import pandas as pd
 
 # python3 manage.py dataframe btc_usdt_60 BTC_USDT 21 1m
@@ -15,15 +15,19 @@ class Command(BaseCommand):
         parser.add_argument('pair', type=str)
         parser.add_argument('days', type=int)
         parser.add_argument('interval', type=str)
+        parser.add_argument('exchange', type=str, help='Exchange')
 
     def handle(self, *args, **options):
 
         pd.set_option('display.max_rows', 100)
         pd.set_option('display.max_columns', 100)
 
+        exchange = options['exchange']
+
         query = Candlestick.objects \
             .filter(interval=options['interval']) \
             .filter(pair=options['pair']) \
+            .filter(exchange=Exchanges[exchange.upper()]) \
             .order_by('-datetime')
 
         if len(query) < 1:
@@ -38,6 +42,7 @@ class Command(BaseCommand):
             .filter(interval=options['interval']) \
             .filter(pair=options['pair']) \
             .filter(datetime__range=(datetime.fromtimestamp(_from), datetime.fromtimestamp(to))) \
+            .filter(exchange=Exchanges[exchange.upper()]) \
             .order_by('datetime')
 
         if candlesticks.count() < 1:
